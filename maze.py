@@ -1,7 +1,7 @@
 import random
 import os
 import time
-width, height = (15,15)
+width, height = (31,31)
 count = 0
 matrix=[]
 for row in range(width):
@@ -36,77 +36,83 @@ def printBlock():
 def printGap():
     print("  ", end="")
     
-def checkUp(x,y):
+def checkUp(x,y,lastDirection):
     if is_within_bounds(x, y-1) and is_within_bounds(x, y-2) and is_within_bounds(x-1, y-2) and is_within_bounds(x+1, y-2):
         print("up")
         if(matrix[x][y-1]!=1) and (matrix[x][y-2]==0) and (matrix[x-1][y-1]==0) and (matrix[x+1][y-1]==0):
             print("went up")
-            nextCell(x,y-1, count)
+            nextCell(x,y-1, count, lastDirection)
                     
-def checkDown(x,y):
+def checkDown(x,y,lastDirection):
     if y < height - 2 and is_within_bounds(x, y+1) and is_within_bounds(x, y+2) and is_within_bounds(x-1, y+2) and is_within_bounds(x+1, y+2):
         print("down")
         if(matrix[x][y+1]!=1) and (matrix[x][y+2]==0) and (matrix[x-1][y+1]==0) and (matrix[x+1][y+1]==0):
             print(" went down")
-            nextCell(x,y+1, count)
+            nextCell(x,y+1, count,lastDirection)
             
-def checkRight(x,y):
+def checkRight(x,y,lastDirection):
     if x < width - 2 and is_within_bounds(x+1, y) and is_within_bounds(x+2, y) and is_within_bounds(x+2, y-1) and is_within_bounds(x+2, y+1):
         print("right")
         if(matrix[x+1][y]!=1) and (matrix[x+2][y]==0) and (matrix[x+1][y-1]==0) and (matrix[x+1][y+1]==0):
             print(" went right")
-            nextCell(x+1,y, count)
+            nextCell(x+1,y, count,lastDirection)
             
-def checkLeft(x,y):
+def checkLeft(x,y,lastDirection):
     if x > 1 and is_within_bounds(x-1, y) and is_within_bounds(x-2, y) and is_within_bounds(x-2, y-1) and is_within_bounds(x-2, y+1):
         print("left")
         if(matrix[x-1][y]!=1) and (matrix[x-2][y]==0) and (matrix[x-1][y-1]==0) and (matrix[x-1][y+1]==0):
             print(" went left")
-            nextCell(x-1,y, count)
+            nextCell(x-1,y, count,lastDirection)
             
+def randomCell(lastDirection):
+    while True:
+        newX = random.randint(0,width-1)
+        newY = random.randint(0,height-1)
+        if(matrix[newX][newY]==1):
+            nextCell(newX, newY, count, lastDirection)
+            break
 
-def nextCell(x, y, count):
+def nextCell(x, y, count, lastDirection):
     matrix[x][y]=1
     
     count += 1
-    if count > 10:
+    if count > 50:
         drawMaze()
         return
     
-    direction = random.randint(1,101)
+    if(random.randint(1,2) == 1):
+        direction = lastDirection
+    else:
+        direction = random.randint(1,101)
     
     if(direction >= 1) and (direction <= 25):
-        checkUp(x,y)
-        checkRight(x,y)
-        checkDown(x,y)
-        checkLeft(x,y)
+        checkUp(x,y, direction)
+        checkRight(x,y, direction)
+        checkDown(x,y, direction)
+        checkLeft(x,y, direction)
+
                 
     elif(direction >= 26) and (direction <= 50):
-        checkRight(x,y)
-        checkDown(x,y)
-        checkLeft(x,y)
-        checkUp(x,y)
+        checkRight(x,y, direction)
+        checkDown(x,y, direction)
+        checkLeft(x,y, direction)
+        checkUp(x,y, direction)
                 
     elif(direction >= 51) and (direction <= 75):
-        checkDown(x,y)
-        checkLeft(x,y)
-        checkUp(x,y)
-        checkRight(x,y)
+        checkDown(x,y, direction)
+        checkLeft(x,y, direction)
+        checkUp(x,y, direction)
+        checkRight(x,y, direction)
                 
     elif(direction >= 76) and (direction <= 100):
-        checkLeft(x,y)
-        checkUp(x,y)
-        checkRight(x,y)
-        checkDown(x,y)
+        checkLeft(x,y, direction)
+        checkUp(x,y, direction)
+        checkRight(x,y, direction)
+        checkDown(x,y, direction)
     else:
-        while True:
-            newX = random.randint(0,width-1)
-            newY = random.randint(0,height-1)
-            if(matrix[newX][newY]==1):
-                nextCell(newX, newY, count)
-                break
+        randomCell(direction)
             
  
 
-nextCell(4, 5, count)
+nextCell(4, 5, count, 1)
 drawMaze()
