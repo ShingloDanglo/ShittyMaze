@@ -1,8 +1,8 @@
 import random
 import os
 import time
-width = 50
-height = 50
+width = 65
+height = 65
 count = 0
 matrix=[]
 for row in range(width):
