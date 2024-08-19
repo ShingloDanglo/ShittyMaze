@@ -31,30 +31,30 @@ def drawMaze():
                 printBlock()
         print("\n", end="")
 
-
-
-
 def printBlock():
     print("██", end="")
 
 def printGap():
     print("  ", end="")
     
+    
+    
 def checkUp(x,y,count,lastDirection):
     if y > 1 and is_within_bounds(x, y-1) and is_within_bounds(x, y-2) and is_within_bounds(x-1, y-2) and is_within_bounds(x+1, y-2):
-        print("up")
+        #print("up")
         if(matrix[x][y-1]!=1) and (matrix[x][y-2]==0) and (matrix[x-1][y-1]==0) and (matrix[x+1][y-1]==0) and (matrix[x-1][y-2]==0) and (matrix[x+1][y-2]==0):
-            print("went up")
+            #print("went up")
             return True
         else:
             return False
     else:
         return False
+        
 def checkDown(x,y,count,lastDirection):
     if y < height - 2 and is_within_bounds(x, y+1) and is_within_bounds(x, y+2) and is_within_bounds(x-1, y+2) and is_within_bounds(x+1, y+2):
-        print("down")
+        #print("down")
         if(matrix[x][y+1]!=1) and (matrix[x][y+2]==0) and (matrix[x-1][y+1]==0) and (matrix[x+1][y+1]==0) and (matrix[x-1][y+2]==0) and (matrix[x+1][y+2]==0):
-            print(" went down")
+            #print(" went down")
             return True
         else:
             return False
@@ -63,9 +63,9 @@ def checkDown(x,y,count,lastDirection):
             
 def checkRight(x,y,count,lastDirection):
     if x < width - 2 and is_within_bounds(x+1, y) and is_within_bounds(x+2, y) and is_within_bounds(x+2, y-1) and is_within_bounds(x+2, y+1):
-        print("right")
+        #print("right")
         if(matrix[x+1][y]!=1) and (matrix[x+2][y]==0) and (matrix[x+1][y-1]==0) and (matrix[x+1][y+1]==0) and (matrix[x+2][y-1]==0) and (matrix[x+2][y+1]==0):
-            print(" went right")
+            #print(" went right")
             return True
         else:
             return False
@@ -74,9 +74,9 @@ def checkRight(x,y,count,lastDirection):
             
 def checkLeft(x,y,count,lastDirection):
     if x > 1 and is_within_bounds(x-1, y) and is_within_bounds(x-2, y) and is_within_bounds(x-2, y-1) and is_within_bounds(x-2, y+1):
-        print("left")
+        #print("left")
         if(matrix[x-1][y]!=1) and (matrix[x-2][y]==0) and (matrix[x-1][y-1]==0) and (matrix[x-1][y+1]==0) and (matrix[x-2][y-1]==0) and (matrix[x-2][y+1]==0):
-            print(" went left")
+            #print(" went left")
             return True
         else:
             return False
@@ -89,8 +89,9 @@ def randomCell(count,lastDirection):
         newY = random.randint(0,height-1)
         if(matrix[newX][newY]==1):
             nextCell(newX, newY, count, lastDirection)
-            print("Jumped to ",newX,newY)
+            #print("Jumped to ",newX,newY)
             break
+
 
 def selectEndpoint():
     possibleEndings=[]
@@ -101,19 +102,22 @@ def selectEndpoint():
     matrix[random.choice(possibleEndings)][height-1]=1
             
 
+
+
 #nextCell recursively generates maze
 def nextCell(x, y, count, lastDirection):
     matrix[x][y]=1
     #drawMaze()
+    #time.sleep(0.05)
     """for cell in range(width):
         if (matrix[cell][height-1]==1) or (matrix[cell][0]==1):
             print("Uh oh")
             return"""
     
     count += 1
-    print(count)
+    #print(count)
     #if count > (width+height)/2:
-    if count > width*height:
+    if count > (width*height):
         #time.sleep(0.1)
         #drawMaze()
         return
@@ -195,6 +199,6 @@ def nextCell(x, y, count, lastDirection):
             
  
 matrix[startingX][0]=1
-nextCell(startingX, startingY, count, random.randint(1,25))
+nextCell(startingX, startingY, count, random.randint(1,100))
 selectEndpoint()
 drawMaze()
